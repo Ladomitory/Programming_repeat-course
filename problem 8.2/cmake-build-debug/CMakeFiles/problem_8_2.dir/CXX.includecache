@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/ladomitory/Users/Ladomitory/Informatic/olympic.nsu.ru/Programming_repeat course(trans from ru)/tour 8/problem 8.2/main.cpp
+iostream
+-
+cmath
+-
+

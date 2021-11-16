@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/ladomitory/Informatic/olympic.nsu.ru/Programming_repeat course(trans from ru)/tour 2/problem 2.3/main.cpp
+iostream
+-
+algorithm
+-
+

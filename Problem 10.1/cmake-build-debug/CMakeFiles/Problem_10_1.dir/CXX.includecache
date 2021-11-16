@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/ladomitory/Users/Ladomitory/Informatic/olympic.nsu.ru/Programming_repeat course(trans from ru)/tour 10/Problem 10.1/main.cpp
+fstream
+-
+string
+-
+map
+-
+
