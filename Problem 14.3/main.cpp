@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <limits>
+//#include <limits>
 #include <set>
 #include <algorithm>
 
@@ -15,8 +15,8 @@ short N, Ss, Sf;
 short ServerMap[100][100] = {0};
 
 void basicFilling() {
-    for (int i = 0; i < 100; ++i) {
-        for (int j = 0; j < 100; ++j) {
+    for (short i = 0; i < 100; ++i) {
+        for (short j = 0; j < 100; ++j) {
             if (i != j) {
                 ServerMap[i][j] = INT16_MAX;
             }
@@ -40,9 +40,9 @@ void scanData() {
 
 void vectorPrint() {
     cout << "[\n";
-    for (short int i = 0; i < N; ++i) {
+    for (short i = 0; i < N; ++i) {
         cout << "[ ";
-        for (short int j = 0; j < N; ++j) {
+        for (short j = 0; j < N; ++j) {
             cout << ServerMap[i][j] << '\t';
         }
         cout << "]\n";
@@ -50,41 +50,46 @@ void vectorPrint() {
     cout << "]" << endl;
 }
 
-short int Dijkstra(short int v0 = 0, short int vf = 0) {
-    set<short int> S;
+short int Dijkstra(short v0 = Ss) {
+    set<short> S;
     S.insert(v0);
-    short int D[100] = {0};
+    short D[100] = {0};
 //  D[v0] = 0;
-    for (short int v = 0; v < N; ++v) {
+    for (short v = 0; v < N; ++v) {
         if (v != v0) {
             D[v] = ServerMap[v0][v];
         }
     }
 
-    short int min, min_i;
+    short min_val, min_i;
     while (S.size() < N) {
-        min = INT16_MAX;
+        min_val = INT16_MAX;
         if (v0 == 1) {
             min_i = 0;
         } else {
             min_i = 1;
         }
-        for (short int i = 0; i < N; ++i) {
-            if (i != v0 && S.find(i) != S.end() && D[i] < min) {
-                min = D[i];
+        for (short i = 0; i < N; ++i) {
+            if (i != v0 && S.find(i) != S.end() && D[i] < min_val) {
+                min_val = D[i];
                 min_i = i;
             }
         }
         S.insert(min_i);
-        for (short int v = 0; v < N; ++v) {
-            D[v] = min(D[v], D[min_i] + ServerMap[min_i][v]);
+        for (short v = 0; v < N; ++v) {
+            if (D[v] > D[min_i] + ServerMap[min_i][v]) {
+                D[v] = D[min_i] + ServerMap[min_i][v];
+            }
         }
     }
+    return D[Sf];
 }
 
 int main() {
     basicFilling();
     scanData();
     vectorPrint();
+    short ans = Dijkstra();
+    cout << ans << endl;
     return 0;
 }
