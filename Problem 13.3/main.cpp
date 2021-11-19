@@ -17,7 +17,7 @@ private:
 
     string line;
 
-    void insertHelper(struct node *temp);
+    struct node* insertHelper();
 
     bool delNull = false;
 
@@ -42,32 +42,28 @@ bool tree::empty() {
 
 void tree::insert(string line) {
     this->line = line;
-    insertHelper(root);
+    root = insertHelper();
 }
 
-void tree::insertHelper(struct node *temp) {
+tree::node* tree::insertHelper() {
     int ind = 0;
-    struct node *New;
-    New = new struct node;
-    New->symb = line[ind];
-    New->left = NULL;
-    New->right = NULL;
+    struct node *temp;
+    temp = new struct node;
+    temp->symb = line[ind];
+    temp->left = NULL;
+    temp->right = NULL;
 
-    temp = New;
-    if (root == NULL) {
-        root = temp;
-    }
     line.erase(ind, 1);
     if (temp->symb < '0' || temp->symb > '9') {
-        insertHelper(temp->left);
-        insertHelper(temp->right);
+        temp->left = insertHelper();
+        temp->right = insertHelper();
     }
+    return temp;
 }
 
 int tree::compulate(struct node *temp) {
-    cout << temp->symb << endl;
     if ('0' <= temp->symb && temp->symb <= '9') {
-        return temp->symb;
+        return (temp->symb - '0');
     } else {
         int a = compulate(temp->left);
         int b = compulate(temp->right);
@@ -97,9 +93,7 @@ int main(){
     string line;
     getline(cin, line);
     t.insert(line);
-    cout << "End insert" << endl;
     int ans = t.compulate(t.root);
-    cout << "End compulate" << endl;
     if (t.checkError()) {
         cout << "NO" << endl;
     } else {
