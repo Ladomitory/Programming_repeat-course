@@ -4,56 +4,106 @@
 ///
 
 #include <iostream>
-#include <fstream>
-#include <string>
 
 using namespace std;
 
 class tree {
 private:
     struct node {
-        char value;
+        char symb;
         struct node *right;
         struct node *left;
     };
 
-    struct node *root;
+    string line;
+
+    void insertHelper(struct node *temp);
+
+    bool delNull = false;
 
 public:
-    tree() {
-        root = new struct node;
-        root->right = NULL;
-        root->left = NULL;
-        root = NULL;
-    }
+    struct node *root;
 
-    bool empty() {
-        return (root == NULL);
-    }
-
-    void insert(char value) {
-        struct node *New = new struct node;
-        New->value = value;
-        New->left = NULL;
-        New->right = NULL;
-        if (empty()) {
-            root = New;
-            return;
-        }
-
-        struct node *temp = root;
-        while (true) {
-            if ('0' <= value && value <= '9') {
-                if (temp->left == NULL) {
-
-                }
-            }
-            break;
-        }
-
-    }
+    tree();
+    bool empty();
+    void insert(string line);
+    int compulate(struct node *temp);
+    bool checkError();
 };
 
-int main() {
+tree::tree() {
+    root = new struct node;
+    root = NULL;
+}
+
+bool tree::empty() {
+    return (root == NULL);
+}
+
+void tree::insert(string line) {
+    this->line = line;
+    insertHelper(root);
+}
+
+void tree::insertHelper(struct node *temp) {
+    int ind = 0;
+    struct node *New;
+    New = new struct node;
+    New->symb = line[ind];
+    New->left = NULL;
+    New->right = NULL;
+
+    temp = New;
+    if (root == NULL) {
+        root = temp;
+    }
+    line.erase(ind, 1);
+    if (temp->symb < '0' || temp->symb > '9') {
+        insertHelper(temp->left);
+        insertHelper(temp->right);
+    }
+}
+
+int tree::compulate(struct node *temp) {
+    cout << temp->symb << endl;
+    if ('0' <= temp->symb && temp->symb <= '9') {
+        return temp->symb;
+    } else {
+        int a = compulate(temp->left);
+        int b = compulate(temp->right);
+        if (temp->symb == '+') {
+            return a + b;
+        } else if (temp->symb == '-') {
+            return a - b;
+        } else if (temp->symb == '*') {
+            return a * b;
+        } else if (temp->symb == '/') {
+            if (b == 0) {
+                delNull = true;
+                return 0;
+            }
+            return a / b;
+        }
+    }
+    return 0;
+}
+
+bool tree::checkError() {
+    return delNull;
+}
+
+int main(){
+    tree t = tree();
+    string line;
+    getline(cin, line);
+    t.insert(line);
+    cout << "End insert" << endl;
+    int ans = t.compulate(t.root);
+    cout << "End compulate" << endl;
+    if (t.checkError()) {
+        cout << "NO" << endl;
+    } else {
+        cout << ans << endl;
+    }
     return 0;
 }
