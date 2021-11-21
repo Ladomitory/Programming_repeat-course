@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/ladomitory/Users/Ladomitory/Informatic/olympic.nsu.ru/Programming_repeat course(trans from ru)/Problem 14.4/main.cpp
+iostream
+-
+algorithm
+-
+vector
+-
+climits
+-
+
