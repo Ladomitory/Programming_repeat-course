@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 #include <vector>
 #include <climits>
@@ -17,44 +18,53 @@ void print_doubleVector(vector<vector<int>> vec) {
 
 int main()
 {
+    ifstream fin("input.txt");
+#define cin fin
+
+
     int N, M, x, y, c;
     cin >> N >> M;
 
 
-    vector<vector<vector<int>>> minWayMatric(N + 1, vector<vector<int>> (N, vector<int> (N,INT_MAX)));
+    vector<vector<unsigned int>> minWayMatric(N, vector<unsigned int> (N, UINT_MAX));
 
     for (; M > 0; M--) {
         cin >> x >> y >> c;
-        minWayMatric[0][x - 1][y - 1] = c;
-        minWayMatric[0][y - 1][x - 1] = c;
+        minWayMatric[x - 1][y - 1] = c;
+        minWayMatric[y - 1][x - 1] = c;
     }
     for (int i = 0; i < N; ++i) {
-        minWayMatric[0][i][i] = 0;
+        minWayMatric[i][i] = 0;
     }
-
-//    print_doubleVector(minWayMatric[0]);
+//    cout << ")" << endl;
+//    print_doubleVector(minWayMatric);
 
     for (int k = 1; k <= N; ++k) {
+        vector<vector<unsigned int>> minWayMatricCopy(minWayMatric);
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                if (minWayMatric[k - 1][i][k - 1] == INT_MAX || minWayMatric[k - 1][k - 1][j] == INT_MAX) {
-                    minWayMatric[k][i][j] = minWayMatric[k - 1][i][j];
+//                cout << k - 1 << ") " << i << ' ' << j << endl;
+                if (minWayMatricCopy[i][k - 1] == UINT_MAX || minWayMatricCopy[k - 1][j] == UINT_MAX) {
+                    minWayMatric[i][j] = minWayMatricCopy[i][j];
                 } else {
-                    minWayMatric[k][i][j] = min(minWayMatric[k - 1][i][j],
-                                                minWayMatric[k - 1][i][k - 1] + minWayMatric[k - 1][k - 1][j]);
+                    minWayMatric[i][j] = min(minWayMatricCopy[i][j],
+                                             minWayMatricCopy[i][k - 1] + minWayMatricCopy[k - 1][j]);
                 }
+//                cout << minWayMatricCopy[i][j] << " ? "
+//                    << minWayMatricCopy[i][k - 1] << " + " << minWayMatricCopy[k - 1][j] << endl;
+//                print_doubleVector(minWayMatric);
             }
         }
-//        print_doubleVector(minWayMatric[k]);
     }
-//    print_doubleVector(minWayMatric[N]);
-
+//    cout << N << ')' << endl;
+//    print_doubleVector(minWayMatric);
+//#undef cin
 
     int K;
     cin >> K;
     for (; K > 0; --K) {
         cin >> x >> y;
-        cout << minWayMatric[N][x - 1][y - 1] << endl;
+        cout << minWayMatric[x - 1][y - 1] << endl;
     }
     return 0;
 }
