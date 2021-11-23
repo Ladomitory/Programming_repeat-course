@@ -15,6 +15,5 @@ const long long INF = (long long) 1.1e9;
 
 int main() {
     
-
     return 0;
 }
