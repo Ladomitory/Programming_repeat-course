@@ -5,15 +5,16 @@
 
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
-#include <string>
+#include <locale>
 #include <map>
+#include <cstring>
 
 using namespace std;
 
-const long long INF = (long long) 1.1e9;
-
 int main() {
-    
+    ifstream fin("input.txt");
+
+    unsigned char symbol;
+
     return 0;
 }
