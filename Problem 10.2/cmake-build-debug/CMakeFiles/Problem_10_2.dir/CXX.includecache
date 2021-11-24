@@ -7,10 +7,8 @@
 #IncludeRegexTransform: 
 
 E:/ladomitory/Users/Ladomitory/Informatic/olympic.nsu.ru/Programming_repeat course(trans from ru)/Problem 10.2/main.cpp
-stdio.h
+fstream
 -
-stdlib.h
--
-clocale
+iostream
 -
 
