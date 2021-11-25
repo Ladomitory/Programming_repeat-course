@@ -3,58 +3,77 @@
 #include <vector>
 #include <algorithm>
 #include <climits>
+#include <set>
 
 using namespace std;
 
-vector<vector<int>> matric;
+int n;
+set<int> V;
+vector<vector<int>> c;
+vector<int> D;
 
-void Dijkstra(int e, vector<int> *minWay)
-{
-    vector<pair<int, int>> queue; //очередь
-    vector<int> map(matric.size(), 0); //?
-    queue.push_back({e, -1});
-    int v;
-    while (!queue.empty())
-    {
-        e = queue[0].first;
-        v = queue[0].second;
-        queue.erase(queue.begin()); //взятие и удаление первого в очереди
-        if (v == -1)
-            (*minWay)[e] = 0; //если начальная вершина, то 0
-        else
-            (*minWay)[e] = min((*minWay)[v] + matric[v][e], (*minWay)[e]);
-        for (int i = 0; i < matric.size(); ++i)
-            if (i != e && matric[e][i] > 0 && (*minWay)[i] > (*minWay)[e] + matric[e][i])
-            {
-                queue.push_back({i, e});
+void Dijkstra(int v0) {
+    V.erase(v0);
+    D[v0] = 0;
+    for (int v = 0; v < n; ++v) {
+        if (v != v0) {
+            D[v] = c[v0][v];
+        }
+    }
+    while (!V.empty()) {
+        int w, m = INT_MAX;
+        for (int i = 0; i < n; ++i) {
+            if (V.find(i) != V.end()) {
+                if (D[i] <= m) {
+                    m = D[i];
+                    w = i;
+                }
             }
-
+        }
+        V.erase(w);
+        for (int v = 0; v < n; ++v) {
+            if (V.find(v) != V.end() && D[w] != INT_MAX && c[w][v] != INT_MAX) {
+                D[v] = min(D[v], D[w] + c[w][v]);
+            }
+        }
     }
     return;
 }
 
-int main()
-{
-    ifstream fin("input.txt");
+int main() {
+    ifstream fin ("input.txt");
 
-    int n, s, f;
-    fin >> n >> s >> f;
+    fin >> n;
+
+    //initialization graph matric
     for (int i = 0; i < n; ++i) {
-        vector<int> v(n, 0);
-        matric.push_back(v);
-    }
-    int x, y, a;
-    while (fin >> x >> y >> a) {
-        matric[x - 1][y - 1] = a;
-        matric[y - 1][x - 1] = a;
+        vector<int> v(n, INT_MAX);
+        v[i] = 0;
+        c.push_back(v);
+
+        D.push_back(INT_MAX);
+        V.insert(i);
     }
 
-    vector<int> minWay(n, INT_MAX);
-    Dijkstra(s - 1, &minWay);
-    if (minWay[f - 1] == INT_MAX) {
-        cout << "NO" << endl;
+    int start, finish;
+    fin >> start >> finish;
+    start--;
+    finish--;
+
+    //filling graph matric
+    int x, y, k;
+    while (fin >> x >> y >> k) {
+        c[x - 1][y - 1] = k;
+        c[y - 1][x - 1] = k;
+    }
+
+    Dijkstra(start);
+
+    //output ans
+    if (D[finish] == INT_MAX) {
+        cout << "no" << endl;
     } else {
-        cout << minWay[f - 1] << endl;
+        cout << D[finish] << endl;
     }
     return 0;
 }
